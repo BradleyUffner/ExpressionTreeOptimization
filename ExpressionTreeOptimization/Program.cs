@@ -20,7 +20,11 @@ namespace ExpressionTreeOptimization
                              new TestClass {Name = "Leo", Key = 4, IsAwesome = true},
                          }.AsQueryable();
 
-            var query = source.Where(d => !d.IsAwesome);
+            var query = source.Where(d => !d.IsAwesome && !d.IsAwesome && !d.IsAwesome && (!d.IsAwesome &&
+                                          (!d.IsAwesome && !d.IsAwesome && !d.IsAwesome && !d.IsAwesome)) &&
+                                          !d.IsAwesome && (!d.IsAwesome && !d.IsAwesome && !d.IsAwesome &&
+                                          !d.IsAwesome && !d.IsAwesome && (!d.IsAwesome && !d.IsAwesome)) &&
+                                          d.Name.EndsWith("m"));
             Console.WriteLine("Unoptimized:");
             Console.WriteLine(query.Expression);
             Console.WriteLine("Result:");
