@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using ExpressionTreeOptimization.EntityFrameworkStuff;
 
 namespace ExpressionTreeOptimization
 {
@@ -31,7 +32,6 @@ namespace ExpressionTreeOptimization
             Console.WriteLine(query.First().Name);
 
             Console.WriteLine();
-            Console.WriteLine();
 
             query = query.Optimize();
             Console.WriteLine("Optimized:");
@@ -39,7 +39,6 @@ namespace ExpressionTreeOptimization
             Console.WriteLine("Result:");
             Console.WriteLine(query.First().Name);
 
-            Console.WriteLine();
             Console.WriteLine();
 
             var stopWatch = new Stopwatch();
@@ -53,6 +52,19 @@ namespace ExpressionTreeOptimization
 
             stopWatch.Stop();
             Console.WriteLine($"{store.Count} iterations = {stopWatch.Elapsed.TotalMilliseconds}ms");
+
+            Console.WriteLine();
+
+            using (var context = new TestContext())
+            {
+                var q = context.Users.Where(u => u.UserRoles.Any(ur=>!ur.IsEnabled));
+
+                Console.WriteLine("Unoptimized SQL:");
+                Console.WriteLine( q.ToString());
+                q = q.Optimize();
+                Console.WriteLine("Optimized SQL:");
+                Console.WriteLine(q.ToString());
+            }
 
             Console.ReadKey();
         }
